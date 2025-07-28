@@ -6,24 +6,23 @@ var Engine = Matter.Engine,
 var engine;
 var runner;
 var world;
-var box1;
+var circle1;
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(400, 600);
   
   engine = Engine.create();
   runner = Runner.create();
+
   world = engine.world;
 
-  box1 = Bodies.rectangle(160, 0, 80, 80);
-  
-  Runner.run(runner, engine);
-  
-  Composite.add(world, [box1]);
+  circle1 = new Ball(200, 50, 6);
 }
-
 
 function draw() {
   background(22);
-  rect(box1.position.x, box1.position.y, 80, 80);
+
+  circle1.show();
+
+  Engine.update(engine);
 }

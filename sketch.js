@@ -22,7 +22,7 @@ function setup() {
 function draw() {
   background(22);
 
-  circle1.show();
+  circle1.Show();
 
   Engine.update(engine);
 }

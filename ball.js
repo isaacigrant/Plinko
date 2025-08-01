@@ -1,8 +1,8 @@
 class Ball {
-    constructor(startX, startY, startRadius) {
+    constructor(startX, startY, startR) {
         this.body = Bodies.circle(startX, startY, startRadius);
         this.position = this.body.position;
-        this.radius = startRadius;
+        this.radius = startR;
 
         Composite.add(world, this.body);
     }

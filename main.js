@@ -4,6 +4,8 @@ var maxPegsPerRow = 12;
 var pegsArray = [];
 var chipCurrentRow = 0;
 var chipCurrentCol = 0;
+var pegNumInArray = -1;
+var targetCol = 10;
 
 window.addEventListener('load', function() {
     gsap.registerPlugin(CustomEase,CustomBounce);
@@ -48,9 +50,11 @@ function SpawnChip() {
     chip.classList.add('chip');
 
     board.appendChild(chip);
+
+    chipCurrentCol = Math.floor(Math.random() * maxPegsPerRow);
     
     gsap.set('.chip',  {
-        x: `${board.offsetWidth / 2 - 10}px`,
+        x: pegsArray[chipCurrentCol].style.left,
         y: `${board.offsetHeight / 10 + 10}px`
     });
 
@@ -59,14 +63,16 @@ function SpawnChip() {
 
 function AnimateChip() {
     if (chipCurrentRow >= numPegRows) {
-        //alert(`Chip has landed in slot ${chipCurrentCol}`);
+        console.log(`Chip has landed in slot ${chipCurrentCol}`);
         return;
     }
 
+    const nextPegIndex = NextPeg();
+
     gsap.to('.chip', {
-        duration: 1,
-        x: pegsArray[NextPeg()].style.left,
-        y: pegsArray[NextPeg()].style.top,
+        duration: 0.6,
+        x: pegsArray[nextPegIndex].style.left,
+        y: pegsArray[nextPegIndex].style.top,
         ease: "power1.in",
         onComplete: () => {
             chipCurrentRow++;
@@ -79,20 +85,25 @@ function NextPeg() {
     let pastPegs = 0;
 
     for (let i = 0; i < chipCurrentRow; i++) {
-        if (i % 2 == 0) {
-            pastPegs += 12;
-        }
-        else {
-            pastPegs += 11;
+        pastPegs += (i % 2 === 0) ? 12 : 11;
+    }
+
+    if (chipCurrentRow > 0) {
+        if (chipCurrentCol < targetCol) {
+            chipCurrentCol++;
+        } 
+        else if (chipCurrentCol > targetCol) {
+            chipCurrentCol--;
         }
     }
 
-    if (chipCurrentRow % 2) {
-        let num = Math.floor(Math.random() * 11);
-        return num + pastPegs;
-    }
-    else {
-        let num = Math.floor(Math.random() * 12);
-        return num + pastPegs;
-    }
+    let maxColsThisRow = (chipCurrentRow % 2 === 0) ? maxPegsPerRow : maxPegsPerRow - 1;
+
+    if (chipCurrentCol < 0)
+        chipCurrentCol = 0;
+
+    if (chipCurrentCol >= maxColsThisRow) 
+        chipCurrentCol = maxColsThisRow - 1;
+
+    return pastPegs + chipCurrentCol;
 }

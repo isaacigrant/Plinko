@@ -172,20 +172,13 @@
 
     function FinalDrop() {
         if (chipCurrentRow === numPegRows - 1) {
-            // get the final peg index for current column
-            const nextPegIndex = NextPeg();
-
-            // spacing between pegs
+            // spacing between slots (same as 12-peg layout)
             let pegXSpacing = board.offsetWidth / maxPegsPerRow;
             let pegYSpacing = ((board.offsetHeight / 3) * 2) / numPegRows;
 
-            // peg position
-            let pegX = parseFloat(pegsArray[nextPegIndex].style.left);
-            let pegY = parseFloat(pegsArray[nextPegIndex].style.top) - 20;
-
-            // final slot position (left of peg, one row lower)
-            let finalX = pegX - (pegXSpacing / 2);
-            let finalY = pegY + pegYSpacing / 2;
+            // final slot position (directly under targetCol in 12-peg layout)
+            let finalX = (targetCol * pegXSpacing + pegXSpacing / 2) - 10; 
+            let finalY = (board.offsetHeight / 4) + (chipCurrentRow + 1) * pegYSpacing; // bottom area of board
 
             gsap.to('.chip', {
                 duration: 0.4 / timeScale,
@@ -193,7 +186,7 @@
                 y: finalY,
                 ease: "bounce.out",
                 onComplete: () => {
-                    alert(`The chip has landed in column ${targetCol - 1}`);
+                    alert(`The chip has landed in column ${targetCol}`);
                 }
             });
         }

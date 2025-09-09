@@ -1,21 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>VibeSMG Plinko Test</title>
-
-        <link rel="stylesheet" href="style.css">
-    </head>
-
-    <body>
-        <div id="board">
-            
+<head>
+	<meta charset="utf-8">
+	<title>VibeSMG Chip Drop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Vibe game boiler-plate">
+	<meta name="author" content="VibeSMGInc">
+    <link rel="stylesheet" href="https://play.iziigame.com/shared_assets/main.css?v=1.0"/>
+    <link rel="stylesheet" href="https://play.iziigame.com/shared_assets/animate.css?v=1.0"/>
+    <link rel="stylesheet" href="serverless-assets/styles.css?v=1.0"/>
+    <link rel="stylesheet" href="serverless-assets/SkinName/serverless.css?v=1.0"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="serverless-assets/SkinName/data.js"></script>
+</head>
+<body>
+    <!-- START of our sound svg icons -->
+    <div id="toggle-sound">
+        <svg id="sound-on" data-name="sound-on" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 763.56">
+            <path d="M880.85,160.37c-11.28,9.22-21,17.74-21.2,18.89-.46,1.15,4.16,9.44,9.91,18.2,13.13,19.12,30.87,55.52,38.71,79.25,11.75,35.71,15.9,62.44,15.9,104.83,0,56.67-9,96.07-32.95,145.14-17.28,35.25-33,57.14-64.28,89.16-15.67,16.13-29.49,30.64-30.41,32.25-1.15,1.61-2.08,7.6-2.08,13.13,0,8.53,1.15,11.29,9,18.89,7.6,7.83,10.37,9,19.12,9,13.36,0,21.2-5.76,52.76-38.48Q952.06,571.15,975.78,459c5.53-26.25,6.22-33.62,6.22-77.39s-.69-51.15-6.22-77.41c-7.14-33.64-16.36-61.28-30.41-91.23-9.45-20.27-35.25-62.43-41-67C902.28,144.24,895.59,148.39,880.85,160.37Z" transform="translate(-2 -0.22)"/>
+            <path d="M782.47,240.55c-10.83,9.22-20.72,17.28-21.65,18.2-.69.92,1.6,6.68,5.53,12.67,10.83,16.82,20.5,39.17,26,59.44,7.14,26,7.14,75.11.23,101.37-9.91,36.86-38,82.94-62.67,102.75-5.3,4.38-11.06,10.6-12.9,14-11.53,22.35,9.9,48.38,33.87,41.24,18-5.53,58.52-51.61,77-87.78,35-69.12,38-152.06,8.28-223.71-7.37-18-29.26-55.06-32-55.06C803.21,224,793.53,231.33,782.47,240.55Z" transform="translate(-2 -0.22)"/>
+            <path d="M680.41,324.18c-11.28,9.45-20.74,18-20.74,18.89s2.08,7.14,4.39,14.05c3.21,9.22,3.9,16.59,3.21,29-1.38,20.5-7.14,33-24,51.84-10.6,12-12.44,15.21-12.44,23.27,0,18.43,11.29,29.72,29.72,29.72,12.21,0,25.57-10.37,40.78-31.56,28.34-39.4,33-94.46,11.52-137.08-3.9-7.83-8.06-14.51-9.44-14.74C702.31,307.13,691.94,314.73,680.41,324.18Z" transform="translate(-2 -0.22)"/>
+            <path d="M561.81,382l.2-110.22-.4-.32-.29-168.7c-.69-47.23-1.16-51.61-6.22-62.9-6.68-15-24-30.87-38.71-35.94C500.25-1.6,477.91-.91,463.85,5.77c-8.75,3.92-33.18,26-100,90.31l-88.24,85-84.55,1.15-84.32,1.15L91.3,190.75A91.09,91.09,0,0,0,64,210.31a46.61,46.61,0,0,0-3.7,4A165.26,165.26,0,0,0,46.15,233C17.38,276.55,2.38,328,2,379.7v4.6C2.38,436,17.38,487.45,46.15,531.07A165.26,165.26,0,0,0,60.3,549.71a46.61,46.61,0,0,0,3.7,4,91.08,91.08,0,0,0,27.31,19.54l15.44,7.37,84.32,1.15,84.54,1.15,88.24,85c66.81,64.27,91.24,86.39,100,90.31,14.06,6.68,36.4,7.37,52.54,1.86,14.75-5.07,32-21,38.71-35.94,5.07-11.29,5.54-15.67,6.22-62.9l.3-168.7.39-.32ZM498.19,703.85c-2.31,2.3-5.08,2.53-9,.92-2.77-1.15-47-42.16-97.92-91.23l-92.39-89.39H211.34c-69.59,0-88.93-.7-95.16-3.23a18.28,18.28,0,0,1-3-1.58l-7.41-7.62c-16.59-16.82-32.94-50.92-41-84.33-.93-4-1.7-8.37-2.32-13a270,270,0,0,1-2-31.65v-1.45a270,270,0,0,1,2-31.65q.93-7,2.32-13c8-33.41,24.41-67.51,41-84.33l7.41-7.62a18.28,18.28,0,0,1,3-1.58c6.22-2.53,25.57-3.23,95.16-3.23h87.55l92.39-89.39c50.92-49.07,95.15-90.08,97.92-91.23,3.92-1.61,6.68-1.38,9,.92,3.23,2.53,3.69,12.21,3.69,71.88,0,21.12.28,144.53.69,250-.41,105.44-.69,228.85-.69,250C501.88,691.64,501.42,701.32,498.19,703.85Z" transform="translate(-2 -0.22)"/>
+        </svg>
+        <svg id="sound-off" data-name="sound-off" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 763.55">
+            <path d="M847.33,4.62c-6.45,3.69-143.17,110.31-674.68,545.05C24.51,670.85,23.13,672.24,19.21,681.68c-7.6,18.2-1.61,41,14.28,53.22,11.75,8.75,33.87,10.37,46.08,3,4.84-2.77,50-38.71,100.68-80.17,50.46-41.47,92.85-75.34,93.77-75.34,1.15,0,41.7,38.24,90.31,85,98.61,95.15,100.68,96.77,129,96.77,31.1,0,59.9-22.58,66.12-51.84,1.61-7.6,2.54-72.11,2.54-189.38V345.08l184.31-150.9C847.92,111.24,901.7,70.28,904.24,66.36,916.91,45.62,910,19.13,888.57,6,877.74-.68,858.16-1.14,847.33,4.62ZM504.41,545.06c0,132.24-.46,150.9-3.69,155.51-1.84,2.77-5.3,5.07-7.6,5.07-4.15,0-170.72-158.51-170.49-162.42,0-2.54,177.17-148.37,180.16-148.6C503.72,394.62,504.41,462.35,504.41,545.06Z" transform="translate(-2.24 -0.61)"/>
+            <path d="M464.09,6.18c-8.75,3.92-33.18,26-100,90.31l-88.24,85-84.55,1.15L107,183.8l-15.44,7.37c-17.74,8.29-31.1,21-45.16,42.16C1.7,301.08-9.82,387.71,15.29,464.89,27,501.29,62.52,561,69.66,556.58c1.84-.92,12.44-9.44,24-18.89l20.73-17.05-8.29-8.52c-16.58-16.82-32.94-50.92-41-84.33-6.22-26.72-5.53-71.65,1.38-97.68,9.91-37.55,34.33-80.18,50-86.63,6.22-2.53,25.57-3.23,95.15-3.23h87.55l92.39-89.39c50.92-49.07,95.15-90.08,97.92-91.23,3.92-1.61,6.68-1.38,9,.92,3.23,2.53,3.69,12.21,3.69,71.88,0,38,.92,68.66,1.84,68.19,1.15-.46,14.75-11.06,30.18-23.73l28.11-23-.69-50.69c-.69-47.23-1.15-51.61-6.22-62.9-6.68-15-24-30.87-38.71-35.94C500.49-1.19,478.15-.5,464.09,6.18Z" transform="translate(-2.24 -0.61)"/>
+            <path d="M881.1,160.77c-11.29,9.22-21,17.74-21.2,18.89-.46,1.15,4.15,9.44,9.91,18.2,13.13,19.12,30.87,55.52,38.71,79.25,11.75,35.71,15.9,62.44,15.9,104.83,0,56.67-9,96.07-32.95,145.14-17.28,35.25-33,57.14-64.28,89.16-15.67,16.13-29.49,30.64-30.41,32.25-1.15,1.61-2.08,7.6-2.08,13.13,0,8.53,1.15,11.29,9,18.89,7.6,7.83,10.37,9,19.12,9,13.36,0,21.2-5.76,52.76-38.48Q952.3,571.54,976,459.34c5.53-26.25,6.22-33.62,6.22-77.39s-.69-51.15-6.22-77.41c-7.14-33.64-16.36-61.28-30.41-91.23-9.45-20.27-35.25-62.43-41-67C902.52,144.64,895.84,148.79,881.1,160.77Z" transform="translate(-2.24 -0.61)"/>
+            <path d="M782.72,241c-10.83,9.22-20.73,17.28-21.66,18.2-.69.92,1.61,6.68,5.53,12.67,10.83,16.82,20.5,39.17,26,59.44,7.14,26,7.14,75.11.23,101.37-9.91,36.86-38,82.94-62.67,102.75-5.3,4.38-11.06,10.6-12.9,14-11.52,22.35,9.91,48.38,33.87,41.24,18-5.53,58.52-51.61,77-87.78,35-69.12,38-152.06,8.29-223.71-7.37-18-29.26-55.06-32-55.06C803.46,224.36,793.78,231.73,782.72,241Z" transform="translate(-2.24 -0.61)"/>
+            <path d="M680.66,324.58c-11.29,9.45-20.74,18-20.74,18.89s2.07,7.14,4.38,14c3.22,9.22,3.91,16.59,3.22,29-1.38,20.5-7.14,32.95-24,51.84-10.6,12-12.44,15.21-12.44,23.27,0,18.43,11.29,29.72,29.72,29.72,12.21,0,25.57-10.37,40.78-31.56,28.34-39.4,33-94.46,11.52-137.08-3.91-7.83-8.06-14.51-9.44-14.74C702.55,307.53,692.18,315.13,680.66,324.58Z" transform="translate(-2.24 -0.61)"/>
+        </svg>
+    </div>
+    <!-- END of our sound svg icons -->
+	<!-- START of board.html content -->
+	<div id="audio-list">
+		<audio id="audio-intro" class="audio" src="serverless-assets/SkinName/audio/intro.mp3" type="audio/mpeg"></audio>
+		<audio id="game-over-win" class="audio" src="serverless-assets/SkinName/audio/gameOverWin.mp3" type="audio/mpeg"></audio>
+		<audio id="game-over-lose" class="audio" src="serverless-assets/SkinName/audio/gameOverLose.mp3" type="audio/mpeg"></audio>
+		<audio id="audio-board-clicked" class="audio" src="serverless-assets/SkinName/audio/boardClicked.mp3" type="audio/mpeg"></audio>
+	</div>
+	<div id="game-container"> <!-- Where entire game loads -->
+		<!-- End of the game this will show a random prize -->
+		<div id="prize-container"></div>
+		<div id="title" phrase-key="TITLE_TEXT"></div> <!-- Game Title Text/Image -->
+		<div id="intro-container" class="screen first-screen"> <!-- First load screen -->
+			<div id="intro-description" phrase-key="INTRO_DESCRIPTION"></div> <!-- Intro description -->
+			<div id="intro-button" phrase-Key="INTRO_BUTTON" show-screen="rules-container" class="screen-button"></div> <!-- Intro button/Play button -->
         </div>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" integrity="sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/CustomEase.min.js" integrity="sha512-CuvnoNrIlhT8htAhjvvnA7EB4sUHfRvfFsjq+JvAKPotN8LlelK/lQgX+u9Gxxsl0+lXmEWRMLPv/oKT1W3dPw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/CustomBounce.min.js" integrity="sha512-PJRGw5+wyjY5yrbQnhzzo0xE9NSx71YD6LPdm9TqjMhR2+ak4Id5exTqt0dcjkiz7LeReq6O4Wkyub12BJ8h4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script language="javascript" type="text/javascript" src="main.js"></script>
-    </body>
+        <div id="rules-container"  class="screen">
+			<div id="rules-header" phrase-key="RULES_HEADER"></div><!-- Rules header like 'How to play' -->
+            <div id="rules-description" phrase-key="RULES_DESCRIPTION"></div> <!-- Game rules goes here -->
+            <div id="play-button" phrase-key="PLAY_BUTTON" show-screen="board-container" class="screen-button"></div>
+        </div>
+		<div id="board-container"  class="screen">
+            <!-- Actual board items goes here where we play the game -->
+            <!-- Game developer canvas goes here -->
+		</div>
+	</div>
+    <!-- END of board.html content -->
+    <div id="restart-button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+            <path d="M35.3 12.7C32.41 9.8 28.42 8 24 8 15.16 8 8.02
+                15.16 8.02 24S15.16 40 24 40c7.45 0 13.69-5.1
+                15.46-12H35.3c-1.65 4.66-6.07 8-11.3 8-6.63
+                0-12-5.37-12-12s5.37-12 12-12c3.31 0 6.28 1.38 8.45
+                3.55L26 22h14V8l-4.7 4.7z"/>
+        </svg>
+    </div>
+	<script src="secure.js"></script> <!-- Called by game server mock functions for initializing game data -->
+    <script src="https://play.iziigame.com/dist/apiSession.js"></script> <!-- Vibe SMG INC game session api for mock games -->
+    <script src="https://play.iziigame.com/dist/apiMock.js"></script> <!-- Vibe SMG INC game api for mock games -->
+	<!-- Replace with the build/game.js -->
+     <!-- Temp GSAP External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" integrity="sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/CustomEase.min.js" integrity="sha512-CuvnoNrIlhT8htAhjvvnA7EB4sUHfRvfFsjq+JvAKPotN8LlelK/lQgX+u9Gxxsl0+lXmEWRMLPv/oKT1W3dPw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/CustomBounce.min.js" integrity="sha512-PJRGw5+wyjY5yrbQnhzzo0xE9NSx71YD6LPdm9TqjMhR2+ak4Id5exTqt0dcjkiz7LeReq6O4Wkyub12BJ8h4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="src/game.js"></script> <!-- Actual game logic and game server frontend mock function calls -->
+</body>
 </html>

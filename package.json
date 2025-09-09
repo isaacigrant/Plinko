@@ -1,0 +1,13 @@
+{
+  "name": "Chip Drop",
+  "version": "1.0.0",
+  "repository": "",
+  "author": "Isaac Grant isaacigrant@gmail.com",
+  "license": "VIBE SMG INC.",
+  "scripts": {
+    "build": "copy /y src\\game.js build\\game.js"
+  },
+  "dependencies": {
+      "path": "^0.12.7"
+  }
+}

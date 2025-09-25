@@ -6,7 +6,8 @@
     var pegsArray = [];
     var chipCurrentRow = 0;
     var chipCurrentCol = 0;
-    var targetCol = window.gameSession.gameSetup.options.targetColumn;
+    //var targetCol = window.gameSession.gameSetup.options.targetColumn;
+    var targetCol = Math.floor(Math.random() * maxPegsPerRow);
     var timeScale = 3;
 
     try {
@@ -106,9 +107,9 @@
         bucket.classList.add('bucket');
 
         let pegXSpacing = board.offsetWidth / maxPegsPerRow;
-        let pegStartX = pegXSpacing / 2 - 10;
         let pegYSpacing = ((board.offsetHeight / 3) * 2) / numPegRows;
-        let bucketX = pegStartX + targetCol * pegXSpacing;
+
+        let bucketX = (targetCol * pegXSpacing + pegXSpacing / 2) - 10; 
         let bucketY = (board.offsetHeight / 4) + numPegRows * pegYSpacing;
 
         bucket.style.left = `${bucketX}px`;
@@ -190,13 +191,11 @@
 
     function FinalDrop() {
         if (chipCurrentRow === numPegRows - 1) {
-            // spacing between slots (same as 12-peg layout)
             let pegXSpacing = board.offsetWidth / maxPegsPerRow;
             let pegYSpacing = ((board.offsetHeight / 3) * 2) / numPegRows;
 
-            // final slot position (directly under targetCol in 12-peg layout)
             let finalX = (targetCol * pegXSpacing + pegXSpacing / 2) - 10; 
-            let finalY = (board.offsetHeight / 4) + (chipCurrentRow + 1) * pegYSpacing; // bottom area of board
+            let finalY = (board.offsetHeight / 4) + (chipCurrentRow + 1) * pegYSpacing;
 
             gsap.to('.chip', {
                 duration: 0.4 / timeScale,

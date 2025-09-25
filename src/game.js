@@ -1,8 +1,8 @@
 /* Actual game code goes here */
 (async function() {
     var board;
-    var numPegRows = 12;
-    var maxPegsPerRow = 12;
+    var numPegRows = 8;
+    var maxPegsPerRow = 8;
     var pegsArray = [];
     var chipCurrentRow = 0;
     var chipCurrentCol = 0;
@@ -10,6 +10,7 @@
     var targetCol = Math.floor(Math.random() * maxPegsPerRow);
     var pegXSpacing;
     var pegYSpacing;
+    var pegNChipSize = 30;
     var timeScale = 3;
 
     try {
@@ -69,7 +70,7 @@
 
         pegXSpacing = board.offsetWidth / maxPegsPerRow;
         pegYSpacing = ((board.offsetHeight / 3) * 2) / numPegRows;
-        let pegStartX = pegXSpacing / 2 - 10;
+        let pegStartX = pegXSpacing / 2 - (pegNChipSize / 2);
         let pegStartY = board.offsetHeight / 6;
 
         for (let row = 0; row < numPegRows; row++) {
@@ -108,7 +109,7 @@
         const bucket = document.createElement('div');
         bucket.classList.add('bucket');
 
-        let bucketX = (targetCol * pegXSpacing + pegXSpacing / 2) - 10; 
+        let bucketX = (targetCol * pegXSpacing + pegXSpacing / 2) - (pegNChipSize / 2); 
         let bucketY = (board.offsetHeight / 4) + numPegRows * pegYSpacing;
 
         bucket.style.left = `${bucketX}px`;
@@ -129,7 +130,7 @@
         
         gsap.set('.chip',  {
             x: pegsArray[chipCurrentCol].style.left,
-            y: `${board.offsetHeight / 10 + 10}px`
+            y: `${board.offsetHeight / 10 + (pegNChipSize / 2)}px`
         });
 
         AnimateChip();
@@ -138,7 +139,7 @@
     function AnimateChip() {
         const nextPegIndex = NextPeg();
         let pegX = parseFloat(pegsArray[nextPegIndex].style.left);
-        let pegY = parseFloat(pegsArray[nextPegIndex].style.top) - 20;
+        let pegY = parseFloat(pegsArray[nextPegIndex].style.top) - pegNChipSize;
 
         gsap.to('.chip', {
             duration: 0.6 / timeScale,
@@ -148,7 +149,7 @@
             onComplete: () => {
                 gsap.to('.chip', {
                     duration: 0.2 / timeScale,
-                    y: pegY - 20,
+                    y: pegY - pegNChipSize,
                     ease: "power1.out",
                     onComplete: () => {
                         FinalDrop();
@@ -165,7 +166,7 @@
         let pastPegs = 0;
 
         for (let i = 0; i < chipCurrentRow; i++) {
-            pastPegs += (i % 2 === 0) ? 12 : 11;
+            pastPegs += (i % 2 === 0) ? 8 : 7;
         }
 
         if (chipCurrentRow > 0) {
@@ -190,7 +191,7 @@
 
     function FinalDrop() {
         if (chipCurrentRow === numPegRows - 1) {
-            let finalX = (targetCol * pegXSpacing + pegXSpacing / 2) - 10; 
+            let finalX = (targetCol * pegXSpacing + pegXSpacing / 2) - (pegNChipSize / 2); 
             let finalY = (board.offsetHeight / 4) + (chipCurrentRow + 1) * pegYSpacing;
 
             gsap.to('.chip', {
@@ -205,4 +206,3 @@
         }
     }
 })();
-

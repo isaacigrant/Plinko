@@ -20,8 +20,8 @@ main {
 }
 
 .peg {
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
     background-color: white;
     border-radius: 50%;
     position: absolute;
@@ -29,16 +29,16 @@ main {
 
 .chip {
     position: absolute;
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
     background-color: red;
     border-radius: 50%;
 }
 
 .bucket {
     position: absolute;
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
     background-color: cyan;
     border-radius: 50%;
 }

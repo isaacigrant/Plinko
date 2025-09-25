@@ -90,7 +90,7 @@
             }
         }
 
-        SpawnChip();
+        SpawnBucket();
     }
 
     function addClickEventForCanvasBoardPieces() {
@@ -99,6 +99,24 @@
 
     function loadBoardProgress() {
         // Add mid state loading functionality
+    }
+
+    function SpawnBucket() {
+        const bucket = document.createElement('div');
+        bucket.classList.add('bucket');
+
+        let pegXSpacing = board.offsetWidth / maxPegsPerRow;
+        let pegStartX = pegXSpacing / 2 - 10;
+        let pegYSpacing = ((board.offsetHeight / 3) * 2) / numPegRows;
+        let bucketX = pegStartX + targetCol * pegXSpacing;
+        let bucketY = (board.offsetHeight / 4) + numPegRows * pegYSpacing;
+
+        bucket.style.left = `${bucketX}px`;
+        bucket.style.top  = `${bucketY}px`;
+
+        board.appendChild(bucket);
+
+        SpawnChip();
     }
 
     function SpawnChip() {

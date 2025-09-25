@@ -27,7 +27,7 @@ window.gameSession = {
         options: {
             skinCode: "SkinName",
             assetsPath: "serverless-assets/",
-            targetColumn: 5,
+            targetColumn: 4,
         },
         prizes: [
             {

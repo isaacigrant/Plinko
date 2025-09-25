@@ -8,6 +8,8 @@
     var chipCurrentCol = 0;
     //var targetCol = window.gameSession.gameSetup.options.targetColumn;
     var targetCol = Math.floor(Math.random() * maxPegsPerRow);
+    var pegXSpacing;
+    var pegYSpacing;
     var timeScale = 3;
 
     try {
@@ -65,8 +67,8 @@
 
         board = document.getElementById('board-container');
 
-        let pegXSpacing = board.offsetWidth / maxPegsPerRow;
-        let pegYSpacing = ((board.offsetHeight / 3) * 2) / numPegRows
+        pegXSpacing = board.offsetWidth / maxPegsPerRow;
+        pegYSpacing = ((board.offsetHeight / 3) * 2) / numPegRows;
         let pegStartX = pegXSpacing / 2 - 10;
         let pegStartY = board.offsetHeight / 6;
 
@@ -105,9 +107,6 @@
     function SpawnBucket() {
         const bucket = document.createElement('div');
         bucket.classList.add('bucket');
-
-        let pegXSpacing = board.offsetWidth / maxPegsPerRow;
-        let pegYSpacing = ((board.offsetHeight / 3) * 2) / numPegRows;
 
         let bucketX = (targetCol * pegXSpacing + pegXSpacing / 2) - 10; 
         let bucketY = (board.offsetHeight / 4) + numPegRows * pegYSpacing;
@@ -191,9 +190,6 @@
 
     function FinalDrop() {
         if (chipCurrentRow === numPegRows - 1) {
-            let pegXSpacing = board.offsetWidth / maxPegsPerRow;
-            let pegYSpacing = ((board.offsetHeight / 3) * 2) / numPegRows;
-
             let finalX = (targetCol * pegXSpacing + pegXSpacing / 2) - 10; 
             let finalY = (board.offsetHeight / 4) + (chipCurrentRow + 1) * pegYSpacing;
 

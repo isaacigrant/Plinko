@@ -2,15 +2,13 @@
 (async function() {
     var board;
     var numPegRows = 8;
-    var maxPegsPerRow = 8;
+    var maxPegsPerRow = 10;
     var pegsArray = [];
     var chipCurrentRow = 0;
     var chipCurrentCol = 0;
     //var targetCol = window.gameSession.gameSetup.options.targetColumn;
     var targetCol = Math.floor(Math.random() * maxPegsPerRow);
-    var pegXSpacing;
-    var pegYSpacing;
-    var pegNChipSize = 30;
+    var chipNPegSize = 10;
     var timeScale = 3;
 
     try {
@@ -68,9 +66,7 @@
 
         board = document.getElementById('board-container');
 
-        pegXSpacing = board.offsetWidth / maxPegsPerRow;
-        pegYSpacing = ((board.offsetHeight / 3) * 2) / numPegRows;
-        let pegStartX = pegXSpacing / 2 - (pegNChipSize / 2);
+        let pegStartX = getPegXSpacing() / 2 - (chipNPegSize / 2);
         let pegStartY = board.offsetHeight / 6;
 
         for (let row = 0; row < numPegRows; row++) {
@@ -79,7 +75,7 @@
                     continue;
                 }
                 if (row % 2) {
-                    var xOffset = (pegXSpacing / 2) * -1;
+                    var xOffset = (getPegXSpacing() / 2) * -1;
                 }
                 else{
                     xOffset = 0;
@@ -87,8 +83,8 @@
 
                 const peg = this.document.createElement('div');
                 peg.classList.add('peg');
-                peg.style.left = `${pegStartX + xOffset + col * pegXSpacing}px`;
-                peg.style.top = `${pegStartY + row * pegYSpacing}px`;
+                peg.style.left = `${pegStartX + xOffset + col * getPegXSpacing()}px`;
+                peg.style.top = `${pegStartY + row * getPegYSpacing()}px`;
                 board.appendChild(peg);
                 pegsArray.push(peg);
             }
@@ -109,8 +105,8 @@
         const bucket = document.createElement('div');
         bucket.classList.add('bucket');
 
-        let bucketX = (targetCol * pegXSpacing + pegXSpacing / 2) - (pegNChipSize / 2); 
-        let bucketY = (board.offsetHeight / 4) + numPegRows * pegYSpacing;
+        let bucketX = (targetCol * getPegXSpacing() + getPegXSpacing() / 2) - (chipNPegSize / 2); 
+        let bucketY = (board.offsetHeight / 4) + numPegRows * getPegYSpacing();
 
         bucket.style.left = `${bucketX}px`;
         bucket.style.top  = `${bucketY}px`;
@@ -130,7 +126,7 @@
         
         gsap.set('.chip',  {
             x: pegsArray[chipCurrentCol].style.left,
-            y: `${board.offsetHeight / 10 + (pegNChipSize / 2)}px`
+            y: `${board.offsetHeight / chipNPegSize + (chipNPegSize / 2)}px`
         });
 
         AnimateChip();
@@ -139,7 +135,7 @@
     function AnimateChip() {
         const nextPegIndex = NextPeg();
         let pegX = parseFloat(pegsArray[nextPegIndex].style.left);
-        let pegY = parseFloat(pegsArray[nextPegIndex].style.top) - pegNChipSize;
+        let pegY = parseFloat(pegsArray[nextPegIndex].style.top) - chipNPegSize;
 
         gsap.to('.chip', {
             duration: 0.6 / timeScale,
@@ -149,7 +145,7 @@
             onComplete: () => {
                 gsap.to('.chip', {
                     duration: 0.2 / timeScale,
-                    y: pegY - pegNChipSize,
+                    y: pegY - chipNPegSize,
                     ease: "power1.out",
                     onComplete: () => {
                         FinalDrop();
@@ -166,7 +162,7 @@
         let pastPegs = 0;
 
         for (let i = 0; i < chipCurrentRow; i++) {
-            pastPegs += (i % 2 === 0) ? 8 : 7;
+            pastPegs += (i % 2 === 0) ? maxPegsPerRow : maxPegsPerRow - 1;
         }
 
         if (chipCurrentRow > 0) {
@@ -191,8 +187,8 @@
 
     function FinalDrop() {
         if (chipCurrentRow === numPegRows - 1) {
-            let finalX = (targetCol * pegXSpacing + pegXSpacing / 2) - (pegNChipSize / 2); 
-            let finalY = (board.offsetHeight / 4) + (chipCurrentRow + 1) * pegYSpacing;
+            let finalX = (targetCol * getPegXSpacing() + getPegXSpacing() / 2) - (chipNPegSize / 2); 
+            let finalY = (board.offsetHeight / 4) + (chipCurrentRow + 1) * getPegYSpacing();
 
             gsap.to('.chip', {
                 duration: 0.4 / timeScale,
@@ -204,5 +200,12 @@
                 }
             });
         }
+    }
+
+    function getPegXSpacing() {
+        return board.offsetWidth / maxPegsPerRow;
+    }
+    function getPegYSpacing() {
+        return ((board.offsetHeight / 3) * 2) / numPegRows;
     }
 })();
